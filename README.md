@@ -1,0 +1,2 @@
+# Data_Modelling_with_Cassandra
+Data Modelling for the company Sparkify. The data is a collection of songs and user activities on their new music streaming app. The goal of the program is to understand what songs users are listening to.The information comes from a directory of CSV files. The program is to created a data base in Apache Cassandra. The pipeline was writed in Python and the program is in a Jupyter Notebook (Data_Modeling_with_Cassandra.ipynb).
