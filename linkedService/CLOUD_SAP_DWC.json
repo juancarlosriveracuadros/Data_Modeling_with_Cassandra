@@ -1,0 +1,21 @@
+{
+	"name": "CLOUD_SAP_DWC",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Odbc",
+		"typeProperties": {
+			"connectionString": {
+				"type": "SecureString",
+				"value": "**********"
+			},
+			"authenticationType": "Basic",
+			"userName": "SAPAZUREINTEGRATION#ADFCONNECTION",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiJjM2ZiOThjNS1lY2RhLTQ1YjktOTZiZC00NTRjOTllZmE0MjYiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "integrationRuntimeVM",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

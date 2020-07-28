@@ -1,0 +1,20 @@
+{
+	"name": "TRG_AZRSQL_STAGE_TVKO",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_SQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TARGET/AZRSQL/STAGE"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "STAGE",
+			"table": "TVKO"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

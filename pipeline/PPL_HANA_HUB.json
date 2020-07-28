@@ -1,0 +1,149 @@
+{
+	"name": "PPL_HANA_HUB",
+	"properties": {
+		"description": "\n",
+		"activities": [
+			{
+				"name": "LKP_SAP_HANA_TABLES",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 2,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "SapHanaSource",
+						"query": "SELECT CONCAT('SAPABAP1.', TABLE_NAME) as TABLE_NAME FROM public.tables\nWHERE SCHEMA_NAME = 'SAPABAP1' AND TABLE_NAME IN ('VBAK', 'TVKOT', 'TVTWT', 'TVTW', 'T001', 'TKA01', 'TVKO', 'TVKOV', 'VBAP', 'KNA1', 'MARA', 'T134', 'T134T', 'MAKT')",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SRC_SAP_HANA_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "FE_HANA_TO_HUB",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "LKP_SAP_HANA_TABLES",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('LKP_SAP_HANA_TABLES').output.value",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "CPY_HANA_TO_HUB",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "SET_FILE_PATH",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "SET_FILE_NAME",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 2,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "SapHanaSource",
+									"query": {
+										"value": "SELECT * FROM @{item().TABLE_NAME}",
+										"type": "Expression"
+									},
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "SRC_SAP_HANA",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "TRG_HUB_RAW",
+									"type": "DatasetReference"
+								}
+							]
+						},
+						{
+							"name": "SET_FILE_PATH",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "File_Path",
+								"value": {
+									"value": "@if(contains(item().TABLE_NAME, 'SAPABAP1.VBAK'), concat('01_RAW/SAPHANA/VBAK/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.VBAP'), concat('01_RAW/SAPHANA/VBAP/'),\nif(endswith(item().TABLE_NAME, 'WT'), concat('01_RAW/SAPHANA/TVTWT/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.TVKOT'), concat('01_RAW/SAPHANA/TVKOT/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.KNA1'), concat('01_RAW/SAPHANA/KNA1/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.T005T'), concat('01_RAW/SAPHANA/T005T/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.AUFK'), concat('01_RAW/SAPHANA/AUFK/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.TKA01'), concat('01_RAW/SAPHANA/TKA01/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.CSKS'), concat('01_RAW/SAPHANA/CSKS/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.T001'), concat('01_RAW/SAPHANA/T001/'),\nif(endswith(item().TABLE_NAME, '34'), concat('01_RAW/SAPHANA/T134/'),\nif(endswith(item().TABLE_NAME, '4T'), concat('01_RAW/SAPHANA/T134T/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.MARA'), concat('01_RAW/SAPHANA/MARA/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.MAKT'), concat('01_RAW/SAPHANA/MAKT/'),\nif(endswith(item().TABLE_NAME, '02'), concat('01_RAW/SAPHANA/T002/'),\nif(endswith(item().TABLE_NAME, '2T'), concat('01_RAW/SAPHANA/T002T/'), \nif(endswith(item().TABLE_NAME, 'TW'), concat('01_RAW/SAPHANA/TVTW/'),\nif(contains(item().TABLE_NAME, 'SAPABAP1.TKA01'), concat('01_RAW/SAPHANA/TKA01/'),\nif(endswith(item().TABLE_NAME, 'OV'), concat('01_RAW/SAPHANA/TVKOV/'),\nif(endswith(item().TABLE_NAME, 'KO'), concat('01_RAW/SAPHANA/TVKO/'),\n'fail'))))))))))))))))))))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "SET_FILE_NAME",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "File_Name",
+								"value": {
+									"value": "@concat(formatDateTime(addhours(utcnow(),2), 'yyyyMMdd_HHmmss_'),replace(item().TABLE_NAME, 'SAPABAP1.', ''), '.parquet')",
+									"type": "Expression"
+								}
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"File_Path": {
+				"type": "String"
+			},
+			"File_Name": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "01_SOURCE_HUB"
+		},
+		"annotations": []
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

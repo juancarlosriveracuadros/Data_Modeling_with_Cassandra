@@ -1,0 +1,25 @@
+{
+	"name": "SRC_HUB_KNA1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_LAKE",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SOURCE/AZRHUB"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "20200601_182743_KNA1.parquet",
+				"folderPath": "01_RAW/SAPHANA/KNA1",
+				"fileSystem": "demodaten"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,38 @@
+{
+	"name": "DF_SALES_DUMMY",
+	"properties": {
+		"folder": {
+			"name": "CORE_DUMMY_VALUES"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceCore"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CORE_DUMMY_SALES",
+						"type": "DatasetReference"
+					},
+					"name": "coreDummy"
+				}
+			],
+			"transformations": [
+				{
+					"name": "changeDatatype"
+				},
+				{
+					"name": "OrderCol"
+				}
+			],
+			"script": "source(output(\n\t\tCSAL_FACT_SALES_SK as string,\n\t\tDIM_KUNDE_FK as string,\n\t\tDIM_AUFTRAG_FK as string,\n\t\tDIM_ORGA_FK as string,\n\t\tDIM_MATERIAL_FK as string,\n\t\tDIM_ZEIT_FK as string,\n\t\tCSAL_MANDT as string,\n\t\tCSAL_VBELN as string,\n\t\tCSAL_MATNR as string,\n\t\tCSAL_AUFNR as string,\n\t\tCSAL_KUNNR as string,\n\t\tCSAL_AWAHR as string,\n\t\tCSAL_BNAME as string,\n\t\tCSAL_VKORG as string,\n\t\tCSAL_VTWEG as string,\n\t\tCSAL_BUKRS_VF as string,\n\t\tCSAL_POSNR as string,\n\t\tCSAL_NETPR as string,\n\t\tCSAL_WAERK as string,\n\t\tCSAL_KWMENG as string,\n\t\tCSAL_UMSATZ as string,\n\t\tCSAL_BSTDK as string,\n\t\tCSAL_HASHKEY_BK as string,\n\t\tCSAL_HASHKEY_DATA as string,\n\t\tCSAL_CREATED_ON as string,\n\t\tCSAL_SOURCE as string,\n\t\tCSAL_VALID_FROM as string,\n\t\tCSAL_VALID_TO as string,\n\t\tCSAL_CURRENT_FLAG as string,\n\t\tCSAL_DML_STRAT as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM CORE.FACT_SALES',\n\tformat: 'query') ~> sourceCore\nsourceCore derive(CSAL_FACT_SALES_SK = 0,\n\t\tDIM_KUNDE_FK = 0,\n\t\tDIM_AUFTRAG_FK = 0,\n\t\tDIM_ORGA_FK = 0,\n\t\tDIM_MATERIAL_FK = 0,\n\t\tDIM_ZEIT_FK = 0,\n\t\tCSAL_MANDT = toInteger(CSAL_MANDT),\n\t\tCSAL_VBELN = 'DUMMY',\n\t\tCSAL_MATNR = 'DUMMY',\n\t\tCSAL_AUFNR = 'DUMMY',\n\t\tCSAL_KUNNR = 'DUMMY',\n\t\tCSAL_AWAHR = 000,\n\t\tCSAL_BNAME = 'DUMMY',\n\t\tCSAL_VKORG = 'DUMMY',\n\t\tCSAL_VTWEG = 'DUMMY',\n\t\tCSAL_BUKRS_VF = 'DUMMY',\n\t\tCSAL_POSNR = 00,\n\t\tCSAL_NETPR = toFloat(00),\n\t\tCSAL_WAERK = 'DUMMY',\n\t\tCSAL_KWMENG = 'DUMMY',\n\t\tCSAL_UMSATZ = toFloat(00),\n\t\tCSAL_BSTDK = 29991231,\n\t\tCSAL_HASHKEY_BK = 'DUMMY',\n\t\tCSAL_HASHKEY_DATA = 'DUMMY',\n\t\tCSAL_CREATED_ON = toDate('29991231 00:00:00.0000000'),\n\t\tCSAL_SOURCE = 'DUMMY',\n\t\tCSAL_VALID_FROM = toDate('29991231 00:00:00.0000000'),\n\t\tCSAL_VALID_TO = toDate('29991231 00:00:00.0000000'),\n\t\tCSAL_CURRENT_FLAG = 'DUMMY',\n\t\tCSAL_DML_STRAT = 'DUMMY') ~> changeDatatype\nchangeDatatype select(mapColumn(\n\t\tCSAL_FACT_SALES_SK,\n\t\tDIM_KUNDE_FK,\n\t\tDIM_AUFTRAG_FK,\n\t\tDIM_ORGA_FK,\n\t\tDIM_MATERIAL_FK,\n\t\tDIM_ZEIT_FK,\n\t\tCSAL_MANDT,\n\t\tCSAL_VBELN,\n\t\tCSAL_MATNR,\n\t\tCSAL_AUFNR,\n\t\tCSAL_KUNNR,\n\t\tCSAL_AWAHR,\n\t\tCSAL_BNAME,\n\t\tCSAL_VKORG,\n\t\tCSAL_VTWEG,\n\t\tCSAL_BUKRS_VF,\n\t\tCSAL_POSNR,\n\t\tCSAL_NETPR,\n\t\tCSAL_WAERK,\n\t\tCSAL_KWMENG,\n\t\tCSAL_UMSATZ,\n\t\tCSAL_BSTDK,\n\t\tCSAL_HASHKEY_BK,\n\t\tCSAL_HASHKEY_DATA,\n\t\tCSAL_CREATED_ON,\n\t\tCSAL_SOURCE,\n\t\tCSAL_VALID_FROM,\n\t\tCSAL_VALID_TO,\n\t\tCSAL_CURRENT_FLAG,\n\t\tCSAL_DML_STRAT\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> OrderCol\nOrderCol sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['TRUNCATE TABLE CORE.FACT_SALES'],\n\tpostSQLs:['INSERT INTO [CORE].[FACT_SALES]\\n           ([CSAL_FACT_SALES_SK]\\n           ,[DIM_KUNDE_FK]\\n           ,[DIM_AUFTRAG_FK]\\n           ,[DIM_ORGA_FK]\\n           ,[DIM_MATERIAL_FK]\\n           ,[DIM_ZEIT_FK]\\n           ,[CSAL_MANDT]\\n           ,[CSAL_VBELN]\\n           ,[CSAL_MATNR]\\n           ,[CSAL_AUFNR]\\n           ,[CSAL_KUNNR]\\n           ,[CSAL_AWAHR]\\n           ,[CSAL_BNAME]\\n           ,[CSAL_VKORG]\\n           ,[CSAL_VTWEG]\\n           ,[CSAL_BUKRS_VF]\\n           ,[CSAL_POSNR]\\n           ,[CSAL_NETPR]\\n           ,[CSAL_WAERK]\\n           ,[CSAL_KWMENG]\\n           ,[CSAL_UMSATZ]\\n           ,[CSAL_BSTDK]\\n           ,[CSAL_HASHKEY_BK]\\n           ,[CSAL_HASHKEY_DATA]\\n           ,[CSAL_CREATED_ON]\\n           ,[CSAL_SOURCE]\\n           ,[CSAL_VALID_FROM]\\n           ,[CSAL_VALID_TO]\\n           ,[CSAL_CURRENT_FLAG]\\n           ,[CSAL_DML_STRAT])\\n     VALUES\\n           (0\\n           ,0\\n           ,0\\n           ,0\\n           ,0\\n           ,0\\n           ,999\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,0000\\n           ,\\'DUMMY\\'\\n           ,000\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,0000\\n           ,00\\n           ,0000\\n           ,\\'DUMMY\\'\\n           ,0000\\n           ,0000\\n           ,29991231\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'29991231 00:00:00.0000000\\'\\n           ,\\'DUMMY\\'\\n           ,\\'29991231 00:00:00.0000000\\'\\n           ,\\'29991231 00:00:00.0000000\\'\\n           ,\\'Y\\'\\n           ,\\'DUMMY\\')'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> coreDummy"
+		}
+	}
+}

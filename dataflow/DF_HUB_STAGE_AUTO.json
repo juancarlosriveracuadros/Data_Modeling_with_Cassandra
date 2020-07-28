@@ -1,0 +1,35 @@
+{
+	"name": "DF_HUB_STAGE_AUTO",
+	"properties": {
+		"folder": {
+			"name": "HUB_STAGE"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRLAKE_HUB",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRC_AZRSQL_STAGE",
+						"type": "DatasetReference"
+					},
+					"name": "hubToStage"
+				}
+			],
+			"transformations": [
+				{
+					"name": "technMetaCol"
+				}
+			],
+			"script": "parameters{\n\tFolder_name as string ('NoValue'),\n\tTablet_name as string\n}\nsource(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tformat: 'parquet') ~> source1\nsource1 derive(CREATED_ON = currentTimestamp(),\n\t\tSOURCE = '01_RAW/SAPHANA/'+ $Folder_name) ~> technMetaCol\ntechnMetaCol sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:[(concat('IF EXISTS ( SELECT TOP 1 * FROM ', 'STAGE.',$Folder_name, ') ', 'TRUNCATE TABLE ', 'STAGE.',$Folder_name))],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> hubToStage"
+		}
+	}
+}

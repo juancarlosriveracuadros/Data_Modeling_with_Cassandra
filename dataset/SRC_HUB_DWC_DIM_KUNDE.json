@@ -1,0 +1,121 @@
+{
+	"name": "SRC_HUB_DWC_DIM_KUNDE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_LAKE",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SOURCE/AZRHUB"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "CORE.DIM_KUNDE.csv",
+				"folderPath": "03_SERVING/CORE_DIM_KUNDE",
+				"fileSystem": "demodaten"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": ""
+		},
+		"schema": [
+			{
+				"name": "CKUN_DIM_KUNDE_SK",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_MANDT",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_KUNNR",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_ANRED",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_ADRNR",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_NAME1",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_MCOD1",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_MCOD3",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_TELF1",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_LAND1",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_STRAS",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_PSTLZ",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_ORT01",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_ORT02",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_REGIO",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_HASHKEY_BK",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_HASHKEY_DATA",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_CREATED_ON",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_SOURCE",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_VALID_FROM",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_VALID_TO",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_CURRENT_FLAG",
+				"type": "String"
+			},
+			{
+				"name": "CKUN_DML_STRAT",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

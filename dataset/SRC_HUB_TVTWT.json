@@ -1,0 +1,25 @@
+{
+	"name": "SRC_HUB_TVTWT",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_LAKE",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SOURCE/AZRHUB"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "20200601_183030_TVTWT.parquet",
+				"folderPath": "01_RAW/SAPHANA/TVTWT",
+				"fileSystem": "demodaten"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

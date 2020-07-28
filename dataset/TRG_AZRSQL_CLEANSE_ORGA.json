@@ -1,0 +1,20 @@
+{
+	"name": "TRG_AZRSQL_CLEANSE_ORGA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_SQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TARGET/AZRSQL/CLEANSE"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CLEANSE",
+			"table": "ORGA"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

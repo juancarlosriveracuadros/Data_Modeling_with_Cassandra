@@ -1,0 +1,76 @@
+{
+	"name": "DF_CLEANSE_AUFTRAG",
+	"properties": {
+		"folder": {
+			"name": "STAGE_CLEANSE"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageAUFK"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageCSKS"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageT001"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CLEANSE_AUFTRAG",
+						"type": "DatasetReference"
+					},
+					"name": "sinkAUFTRAG"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectColAUFK"
+				},
+				{
+					"name": "ChangeDataTypeAUFK"
+				},
+				{
+					"name": "SelectColCSKS"
+				},
+				{
+					"name": "ChangeDateTypeCSKS"
+				},
+				{
+					"name": "SelectColT001"
+				},
+				{
+					"name": "ChangeDateTypeT001"
+				},
+				{
+					"name": "JoinAUFKuCSKS"
+				},
+				{
+					"name": "JoinAUFKuCSKSuT001"
+				},
+				{
+					"name": "CreateHash"
+				},
+				{
+					"name": "SelectColumnOrder"
+				}
+			],
+			"script": "source(output(\n\t\tMANDT as string,\n\t\tAUFNR as string,\n\t\tAUART as string,\n\t\tAUTYP as string,\n\t\tREFNR as string,\n\t\tERNAM as string,\n\t\tERDAT as string,\n\t\tAENAM as string,\n\t\tAEDAT as string,\n\t\tKTEXT as string,\n\t\tLTEXT as string,\n\t\tBUKRS as string,\n\t\tWERKS as string,\n\t\tGSBER as string,\n\t\tKOKRS as string,\n\t\tCCKEY as string,\n\t\tKOSTV as string,\n\t\tSTORT as string,\n\t\tSOWRK as string,\n\t\tASTKZ as string,\n\t\tWAERS as string,\n\t\tASTNR as string,\n\t\tSTDAT as string,\n\t\tESTNR as string,\n\t\tPHAS0 as string,\n\t\tPHAS1 as string,\n\t\tPHAS2 as string,\n\t\tPHAS3 as string,\n\t\tPDAT1 as string,\n\t\tPDAT2 as string,\n\t\tPDAT3 as string,\n\t\tIDAT1 as string,\n\t\tIDAT2 as string,\n\t\tIDAT3 as string,\n\t\tOBJID as string,\n\t\tVOGRP as string,\n\t\tLOEKZ as string,\n\t\tPLGKZ as string,\n\t\tKVEWE as string,\n\t\tKAPPL as string,\n\t\tKALSM as string,\n\t\tZSCHL as string,\n\t\tABKRS as string,\n\t\tKSTAR as string,\n\t\tKOSTL as string,\n\t\tSAKNR as string,\n\t\tSETNM as string,\n\t\tCYCLE as string,\n\t\tSDATE as string,\n\t\tSEQNR as string,\n\t\tUSER0 as string,\n\t\tUSER1 as string,\n\t\tUSER2 as string,\n\t\tUSER3 as string,\n\t\tUSER4 as decimal(38,18),\n\t\tUSER5 as string,\n\t\tUSER6 as string,\n\t\tUSER7 as string,\n\t\tUSER8 as string,\n\t\tUSER9 as string,\n\t\tOBJNR as string,\n\t\tPRCTR as string,\n\t\tPSPEL as string,\n\t\tAWSLS as string,\n\t\tABGSL as string,\n\t\tTXJCD as string,\n\t\tFUNC_AREA as string,\n\t\tSCOPE as string,\n\t\tPLINT as string,\n\t\tKDAUF as string,\n\t\tKDPOS as string,\n\t\tAUFEX as string,\n\t\tIVPRO as string,\n\t\tLOGSYSTEM as string,\n\t\tFLG_MLTPS as string,\n\t\tABUKR as string,\n\t\tAKSTL as string,\n\t\tSIZECL as string,\n\t\tIZWEK as string,\n\t\tUMWKZ as string,\n\t\tKSTEMPF as string,\n\t\tZSCHM as string,\n\t\tPKOSA as string,\n\t\tANFAUFNR as string,\n\t\tPROCNR as string,\n\t\tPROTY as string,\n\t\tRSORD as string,\n\t\tBEMOT as string,\n\t\tADRNRA as string,\n\t\tERFZEIT as string,\n\t\tAEZEIT as string,\n\t\tCSTG_VRNT as string,\n\t\tCOSTESTNR as string,\n\t\tVERAA_USER as string,\n\t\tEEW_AUFK_PS_DUMMY as string,\n\t\tVNAME as string,\n\t\tRECID as string,\n\t\tETYPE as string,\n\t\tOTYPE as string,\n\t\tJV_JIBCL as string,\n\t\tJV_JIBSA as string,\n\t\tJV_OCO as string,\n\t\tCPD_UPDAT as decimal(38,18),\n\t\t{/CUM/INDCU} as string,\n\t\t{/CUM/CMNUM} as string,\n\t\t{/CUM/AUEST} as string,\n\t\t{/CUM/DESNUM} as string,\n\t\t{/MRSS/PL_STRU_ID} as string,\n\t\t{/MRSS/PL_MAN_TYP} as string,\n\t\t{/MRSS/ORDER_PROB} as string,\n\t\t{/MRSS/ACT_TYPE} as string,\n\t\t{/MRSS/INIT_DONE} as string,\n\t\t{/MRSS/DATACHANGE} as string,\n\t\t{/MRSS/SALES_ORG} as string,\n\t\t{/MRSS/NW_BOOKED} as string,\n\t\tAD01PROFNR as string,\n\t\tVAPLZ as string,\n\t\tWAWRK as string,\n\t\tFERC_IND as string,\n\t\tAUFK_STATUS as integer,\n\t\tCLAIM_CONTROL as string,\n\t\tUPDATE_NEEDED as string,\n\t\tUPDATE_CONTROL as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.AUFK',\n\tformat: 'query') ~> sourceStageAUFK\nsource(output(\n\t\tMANDT as string,\n\t\tKOKRS as string,\n\t\tKOSTL as string,\n\t\tDATBI as string,\n\t\tDATAB as string,\n\t\tBKZKP as string,\n\t\tPKZKP as string,\n\t\tBUKRS as string,\n\t\tGSBER as string,\n\t\tKOSAR as string,\n\t\tVERAK as string,\n\t\tVERAK_USER as string,\n\t\tWAERS as string,\n\t\tKALSM as string,\n\t\tTXJCD as string,\n\t\tPRCTR as string,\n\t\tWERKS as string,\n\t\tLOGSYSTEM as string,\n\t\tERSDA as string,\n\t\tUSNAM as string,\n\t\tBKZKS as string,\n\t\tBKZER as string,\n\t\tBKZOB as string,\n\t\tPKZKS as string,\n\t\tPKZER as string,\n\t\tVMETH as string,\n\t\tMGEFL as string,\n\t\tABTEI as string,\n\t\tNKOST as string,\n\t\tKVEWE as string,\n\t\tKAPPL as string,\n\t\tKOSZSCHL as string,\n\t\tLAND1 as string,\n\t\tANRED as string,\n\t\tNAME1 as string,\n\t\tNAME2 as string,\n\t\tNAME3 as string,\n\t\tNAME4 as string,\n\t\tORT01 as string,\n\t\tORT02 as string,\n\t\tSTRAS as string,\n\t\tPFACH as string,\n\t\tPSTLZ as string,\n\t\tPSTL2 as string,\n\t\tREGIO as string,\n\t\tSPRAS as string,\n\t\tTELBX as string,\n\t\tTELF1 as string,\n\t\tTELF2 as string,\n\t\tTELFX as string,\n\t\tTELTX as string,\n\t\tTELX1 as string,\n\t\tDATLT as string,\n\t\tDRNAM as string,\n\t\tKHINR as string,\n\t\tCCKEY as string,\n\t\tKOMPL as string,\n\t\tSTAKZ as string,\n\t\tOBJNR as string,\n\t\tFUNKT as string,\n\t\tAFUNK as string,\n\t\tCPI_TEMPL as string,\n\t\tCPD_TEMPL as string,\n\t\tFUNC_AREA as string,\n\t\tSCI_TEMPL as string,\n\t\tSCD_TEMPL as string,\n\t\tSKI_TEMPL as string,\n\t\tSKD_TEMPL as string,\n\t\tVNAME as string,\n\t\tRECID as string,\n\t\tETYPE as string,\n\t\tJV_OTYPE as string,\n\t\tJV_JIBCL as string,\n\t\tJV_JIBSA as string,\n\t\tFERC_IND as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.CSKS',\n\tformat: 'query') ~> sourceStageCSKS\nsource(output(\n\t\tMANDT as string,\n\t\tBUKRS as string,\n\t\tBUTXT as string,\n\t\tORT01 as string,\n\t\tLAND1 as string,\n\t\tWAERS as string,\n\t\tSPRAS as string,\n\t\tKTOPL as string,\n\t\tWAABW as string,\n\t\tPERIV as string,\n\t\tKOKFI as string,\n\t\tRCOMP as string,\n\t\tADRNR as string,\n\t\tSTCEG as string,\n\t\tFIKRS as string,\n\t\tXFMCO as string,\n\t\tXFMCB as string,\n\t\tXFMCA as string,\n\t\tTXJCD as string,\n\t\tFMHRDATE as string,\n\t\tXTEMPLT as string,\n\t\tBUVAR as string,\n\t\tFDBUK as string,\n\t\tXFDIS as string,\n\t\tXVALV as string,\n\t\tXSKFN as string,\n\t\tKKBER as string,\n\t\tXMWSN as string,\n\t\tMREGL as string,\n\t\tXGSBE as string,\n\t\tXGJRV as string,\n\t\tXKDFT as string,\n\t\tXPROD as string,\n\t\tXEINK as string,\n\t\tXJVAA as string,\n\t\tXVVWA as string,\n\t\tXSLTA as string,\n\t\tXFDMM as string,\n\t\tXFDSD as string,\n\t\tXEXTB as string,\n\t\tEBUKR as string,\n\t\tKTOP2 as string,\n\t\tUMKRS as string,\n\t\tBUKRS_GLOB as string,\n\t\tFSTVA as string,\n\t\tOPVAR as string,\n\t\tXCOVR as string,\n\t\tTXKRS as string,\n\t\tWFVAR as string,\n\t\tXBBBF as string,\n\t\tXBBBE as string,\n\t\tXBBBA as string,\n\t\tXBBKO as string,\n\t\tXSTDT as string,\n\t\tMWSKV as string,\n\t\tMWSKA as string,\n\t\tIMPDA as string,\n\t\tXNEGP as string,\n\t\tXKKBI as string,\n\t\tWT_NEWWT as string,\n\t\tPP_PDATE as string,\n\t\tINFMT as string,\n\t\tFSTVARE as string,\n\t\tKOPIM as string,\n\t\tDKWEG as string,\n\t\tOFFSACCT as string,\n\t\tBAPOVAR as string,\n\t\tXCOS as string,\n\t\tXCESSION as string,\n\t\tXSPLT as string,\n\t\tSURCCM as string,\n\t\tDTPROV as string,\n\t\tDTAMTC as string,\n\t\tDTTAXC as string,\n\t\tDTTDSP as string,\n\t\tDTAXR as string,\n\t\tXVATDATE as string,\n\t\tPST_PER_VAR as string,\n\t\tXBBSC as string,\n\t\tFM_DERIVE_ACC as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.T001',\n\tformat: 'query') ~> sourceStageT001\nsourceStageAUFK select(mapColumn(\n\t\tMANDT,\n\t\tAUFNR,\n\t\tKTEXT,\n\t\tKOSTV,\n\t\tKOKRS,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColAUFK\nSelectColAUFK derive(MANDT = toInteger(MANDT)) ~> ChangeDataTypeAUFK\nsourceStageCSKS select(mapColumn(\n\t\tMANDT,\n\t\tKOKRS,\n\t\tKOSTL,\n\t\tDATBI,\n\t\tBUKRS,\n\t\tVERAK,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColCSKS\nSelectColCSKS derive(MANDT = toInteger(MANDT)) ~> ChangeDateTypeCSKS\nsourceStageT001 select(mapColumn(\n\t\tMANDT,\n\t\tBUKRS,\n\t\tBUTXT,\n\t\tORT01,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColT001\nSelectColT001 derive(MANDT = toInteger(MANDT)) ~> ChangeDateTypeT001\nChangeDataTypeAUFK, ChangeDateTypeCSKS join(ChangeDataTypeAUFK@MANDT == ChangeDateTypeCSKS@MANDT\n\t&& SelectColAUFK@KOKRS == SelectColCSKS@KOKRS,\n\tjoinType:'outer',\n\tbroadcast: 'auto')~> JoinAUFKuCSKS\nJoinAUFKuCSKS, ChangeDateTypeT001 join(ChangeDateTypeCSKS@MANDT == ChangeDateTypeT001@MANDT\n\t&& SelectColCSKS@BUKRS == SelectColT001@BUKRS,\n\tjoinType:'outer',\n\tbroadcast: 'auto')~> JoinAUFKuCSKSuT001\nJoinAUFKuCSKSuT001 derive(HASHKEY_BK = md5('_',ChangeDataTypeAUFK@MANDT,'_',AUFNR,'_'),\n\t\tHASHKEY_DATA = md5('_',KTEXT,'_',KOSTV,'_',VERAK,'_',BUTXT,ORT01,'_',SelectColAUFK@KOKRS,'_',SelectColT001@BUKRS,'_'),\n\t\tCREATED_ON = currentTimestamp(),\n\t\tSOURCE = 'asapSql.STAGE.CSKS_asapSql.STAGE.AUFK_asapSql.STAGE.T001') ~> CreateHash\nCreateHash select(mapColumn(\n\t\tMANDT = {ChangeDataTypeAUFK@MANDT},\n\t\tAUFNR,\n\t\tKOKRS = {SelectColAUFK@KOKRS},\n\t\tBUKRS = {SelectColT001@BUKRS},\n\t\tDATBI,\n\t\tKOSTV,\n\t\tKOSTL,\n\t\tKTEXT,\n\t\tVERAK,\n\t\tBUTXT,\n\t\tORT01,\n\t\tHASHKEY_BK,\n\t\tHASHKEY_DATA,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColumnOrder\nSelectColumnOrder sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['TRUNCATE TABLE CLEANSE.AUFTRAG'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sinkAUFTRAG"
+		}
+	}
+}

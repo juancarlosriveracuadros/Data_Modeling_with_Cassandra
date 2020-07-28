@@ -1,0 +1,31 @@
+{
+	"name": "TRG_HUB_RAW",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_LAKE",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TARGET/AZRHUB"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@variables('File_Name')",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@variables('File_Path')",
+					"type": "Expression"
+				},
+				"fileSystem": "demodaten"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

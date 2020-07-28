@@ -1,0 +1,76 @@
+{
+	"name": "DF_CLEANSE_CORE_DIM_ORGA",
+	"properties": {
+		"folder": {
+			"name": "CLEANSE_CORE"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "SourceCleanseOrga"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "SourceCoreOrga"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CORE_DIM_ORG",
+						"type": "DatasetReference"
+					},
+					"name": "targetUpdateCoreDimOrg"
+				},
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CORE_DIM_ORG",
+						"type": "DatasetReference"
+					},
+					"name": "targetInsertCoreDimOrg"
+				}
+			],
+			"transformations": [
+				{
+					"name": "CoreDimMaterialMaxSk"
+				},
+				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "UpDataRows"
+				},
+				{
+					"name": "derivedColForUpdatedRow"
+				},
+				{
+					"name": "alterRowforUpdate"
+				},
+				{
+					"name": "createSk"
+				},
+				{
+					"name": "JoinMax"
+				},
+				{
+					"name": "derivedColForNewRows"
+				},
+				{
+					"name": "alterRowforInsert"
+				},
+				{
+					"name": "filterActiveRows"
+				}
+			],
+			"script": "source(output(\n\t\tMANDT as integer,\n\t\tVKORG as string,\n\t\tVTWEG as string,\n\t\tKOKRS as string,\n\t\tBUKRS as string,\n\t\tSPRAS as string,\n\t\tBUTXT as string,\n\t\tORT01 as string,\n\t\tLAND1 as string,\n\t\tVKORG_VTEXT as string,\n\t\tVTWEG_VTEXT as string,\n\t\tKOKRS_BEZEI as string,\n\t\tHASHKEY_BK as string,\n\t\tHASHKEY_DATA as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM CLEANSE.ORGA',\n\tformat: 'query') ~> SourceCleanseOrga\nsource(output(\n\t\tCORG_DIM_ORGA_SK as string,\n\t\tCORG_MANDT as string,\n\t\tCORG_VKORG as string,\n\t\tCORG_VTWEG as string,\n\t\tCORG_KOKRS as string,\n\t\tCORG_BUKRS as string,\n\t\tCORG_SPRAS as string,\n\t\tCORG_BUTXT as string,\n\t\tCORG_ORT01 as string,\n\t\tCORG_LAND1 as string,\n\t\tCORG_VKORG_VTEXT as string,\n\t\tCORG_VTWEG_VTEXT as string,\n\t\tCORG_KOKRS_BEZEI as string,\n\t\tCORG_HASHKEY_BK as string,\n\t\tCORG_HASHKEY_DATA as string,\n\t\tCORG_CREATED_ON as string,\n\t\tCORG_SOURCE as string,\n\t\tCORG_VALID_FROM as string,\n\t\tCORG_VALID_TO as string,\n\t\tCORG_CURRENT_FLAG as string,\n\t\tCORG_DML_STRAT as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM CORE.DIM_ORGA',\n\tformat: 'query') ~> SourceCoreOrga\nfilterActiveRows aggregate(MAXSK = max(toInteger(CORG_DIM_ORGA_SK))) ~> CoreDimMaterialMaxSk\nSourceCleanseOrga, filterActiveRows lookup(MANDT == toInteger(CORG_MANDT)\n\t&& SPRAS == CORG_SPRAS\n\t&& VKORG == CORG_VKORG\n\t&& VTWEG == CORG_VTWEG,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nLookup1 split(!isNull(CORG_HASHKEY_BK) && notEquals(CORG_HASHKEY_DATA, HASHKEY_DATA),\n\tisNull(CORG_HASHKEY_BK),\n\tdisjoint: false) ~> UpDataRows@(updateRows, newRows, doNothing)\nUpDataRows@updateRows derive(CURRENT_FLAG = 'N',\n\t\tVALID_TO = currentTimestamp(),\n\t\tDML_STRAT = 'HIST_UPD') ~> derivedColForUpdatedRow\nderivedColForUpdatedRow alterRow(updateIf(true())) ~> alterRowforUpdate\nUpDataRows@newRows keyGenerate(output(SK as long),\n\tstartAt: 1L) ~> createSk\ncreateSk, CoreDimMaterialMaxSk join(SK == MAXSK || true(),\n\tjoinType:'cross',\n\tbroadcast: 'auto')~> JoinMax\nJoinMax derive(NEWSK = SK + MAXSK,\n\t\tVALID_FROM = currentTimestamp(),\n\t\tVALID_TO = toTimestamp('2999-12-31 00:00:00'),\n\t\tDML_STRAT = iif(notEquals(CORG_HASHKEY_DATA, HASHKEY_DATA), 'HIST_INS', 'INS'),\n\t\tSOURCE = 'CLEANSE.ORG',\n\t\tCREATED_ON = currentTimestamp(),\n\t\tCURRENT_FLAG = 'Y') ~> derivedColForNewRows\nderivedColForNewRows alterRow(insertIf(true())) ~> alterRowforInsert\nSourceCoreOrga filter(CORG_CURRENT_FLAG == 'Y') ~> filterActiveRows\nalterRowforUpdate sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['CORG_DIM_ORGA_SK'],\n\tformat: 'table',\n\tmapColumn(\n\t\tCORG_DIM_ORGA_SK,\n\t\tCORG_VALID_TO = VALID_TO,\n\t\tCORG_CURRENT_FLAG = CURRENT_FLAG,\n\t\tCORG_DML_STRAT = DML_STRAT\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> targetUpdateCoreDimOrg\nalterRowforInsert sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tCORG_DIM_ORGA_SK = NEWSK,\n\t\tCORG_MANDT = MANDT,\n\t\tCORG_VKORG = VKORG,\n\t\tCORG_VTWEG = VTWEG,\n\t\tCORG_KOKRS = KOKRS,\n\t\tCORG_BUKRS = BUKRS,\n\t\tCORG_SPRAS = SPRAS,\n\t\tCORG_BUTXT = BUTXT,\n\t\tCORG_ORT01 = ORT01,\n\t\tCORG_LAND1 = LAND1,\n\t\tCORG_VKORG_VTEXT = VKORG_VTEXT,\n\t\tCORG_VTWEG_VTEXT = VTWEG_VTEXT,\n\t\tCORG_KOKRS_BEZEI = KOKRS_BEZEI,\n\t\tCORG_HASHKEY_BK = HASHKEY_BK,\n\t\tCORG_HASHKEY_DATA = HASHKEY_DATA,\n\t\tCORG_CREATED_ON = CREATED_ON,\n\t\tCORG_SOURCE = SOURCE,\n\t\tCORG_VALID_FROM = VALID_FROM,\n\t\tCORG_VALID_TO = VALID_TO,\n\t\tCORG_CURRENT_FLAG = CURRENT_FLAG,\n\t\tCORG_DML_STRAT = DML_STRAT\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> targetInsertCoreDimOrg"
+		}
+	}
+}

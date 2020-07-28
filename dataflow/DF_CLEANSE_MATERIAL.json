@@ -1,0 +1,101 @@
+{
+	"name": "DF_CLEANSE_MATERIAL",
+	"properties": {
+		"folder": {
+			"name": "STAGE_CLEANSE"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageMARA"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageT134"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageT134T"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageMAKT"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CLEANSE_MATERIAL",
+						"type": "DatasetReference"
+					},
+					"name": "sinkMaterial"
+				}
+			],
+			"transformations": [
+				{
+					"name": "SelectColMARA"
+				},
+				{
+					"name": "SelectColT134"
+				},
+				{
+					"name": "SelectColT134T"
+				},
+				{
+					"name": "SelectColMAKT"
+				},
+				{
+					"name": "ChangeDatatypeMARA"
+				},
+				{
+					"name": "ChangeDatatypeT134"
+				},
+				{
+					"name": "ChangeDatatypeT134T"
+				},
+				{
+					"name": "ChangeDatatypeMAKT"
+				},
+				{
+					"name": "JoinT134TT134"
+				},
+				{
+					"name": "JoinALL"
+				},
+				{
+					"name": "JoinMAKTMARA"
+				},
+				{
+					"name": "CreateHash"
+				},
+				{
+					"name": "FilterT134T"
+				},
+				{
+					"name": "FilterMAKT"
+				},
+				{
+					"name": "SelectColumnOrder"
+				},
+				{
+					"name": "distinctRows"
+				}
+			],
+			"script": "source(output(\n\t\tMANDT as string,\n\t\tMATNR as string,\n\t\tERSDA as string,\n\t\tERNAM as string,\n\t\tLAEDA as string,\n\t\tAENAM as string,\n\t\tVPSTA as string,\n\t\tPSTAT as string,\n\t\tLVORM as string,\n\t\tMTART as string,\n\t\tMBRSH as string,\n\t\tMATKL as string,\n\t\tBISMT as string,\n\t\tMEINS as string,\n\t\tBSTME as string,\n\t\tZEINR as string,\n\t\tZEIAR as string,\n\t\tZEIVR as string,\n\t\tZEIFO as string,\n\t\tAESZN as string,\n\t\tBLATT as string,\n\t\tBLANZ as string,\n\t\tFERTH as string,\n\t\tFORMT as string,\n\t\tGROES as string,\n\t\tWRKST as string,\n\t\tNORMT as string,\n\t\tLABOR as string,\n\t\tEKWSL as string,\n\t\tBRGEW as decimal(38,18),\n\t\tNTGEW as decimal(38,18),\n\t\tGEWEI as string,\n\t\tVOLUM as decimal(38,18),\n\t\tVOLEH as string,\n\t\tBEHVO as string,\n\t\tRAUBE as string,\n\t\tTEMPB as string,\n\t\tDISST as string,\n\t\tTRAGR as string,\n\t\tSTOFF as string,\n\t\tSPART as string,\n\t\tKUNNR as string,\n\t\tEANNR as string,\n\t\tWESCH as decimal(38,18),\n\t\tBWVOR as string,\n\t\tBWSCL as string,\n\t\tSAISO as string,\n\t\tETIAR as string,\n\t\tETIFO as string,\n\t\tENTAR as string,\n\t\tEAN11 as string,\n\t\tNUMTP as string,\n\t\tLAENG as decimal(38,18),\n\t\tBREIT as decimal(38,18),\n\t\tHOEHE as decimal(38,18),\n\t\tMEABM as string,\n\t\tPRDHA as string,\n\t\tAEKLK as string,\n\t\tCADKZ as string,\n\t\tQMPUR as string,\n\t\tERGEW as decimal(38,18),\n\t\tERGEI as string,\n\t\tERVOL as decimal(38,18),\n\t\tERVOE as string,\n\t\tGEWTO as decimal(38,18),\n\t\tVOLTO as decimal(38,18),\n\t\tVABME as string,\n\t\tKZREV as string,\n\t\tKZKFG as string,\n\t\tXCHPF as string,\n\t\tVHART as string,\n\t\tFUELG as decimal(38,18),\n\t\tSTFAK as integer,\n\t\tMAGRV as string,\n\t\tBEGRU as string,\n\t\tDATAB as string,\n\t\tLIQDT as string,\n\t\tSAISJ as string,\n\t\tPLGTP as string,\n\t\tMLGUT as string,\n\t\tEXTWG as string,\n\t\tSATNR as string,\n\t\tATTYP as string,\n\t\tKZKUP as string,\n\t\tKZNFM as string,\n\t\tPMATA as string,\n\t\tMSTAE as string,\n\t\tMSTAV as string,\n\t\tMSTDE as string,\n\t\tMSTDV as string,\n\t\tTAKLV as string,\n\t\tRBNRM as string,\n\t\tMHDRZ as decimal(38,18),\n\t\tMHDHB as decimal(38,18),\n\t\tMHDLP as decimal(38,18),\n\t\tINHME as string,\n\t\tINHAL as decimal(38,18),\n\t\tVPREH as decimal(38,18),\n\t\tETIAG as string,\n\t\tINHBR as decimal(38,18),\n\t\tCMETH as string,\n\t\tCUOBF as string,\n\t\tKZUMW as string,\n\t\tKOSCH as string,\n\t\tSPROF as string,\n\t\tNRFHG as string,\n\t\tMFRPN as string,\n\t\tMFRNR as string,\n\t\tBMATN as string,\n\t\tMPROF as string,\n\t\tKZWSM as string,\n\t\tSAITY as string,\n\t\tPROFL as string,\n\t\tIHIVI as string,\n\t\tILOOS as string,\n\t\tSERLV as string,\n\t\tKZGVH as string,\n\t\tXGCHP as string,\n\t\tKZEFF as string,\n\t\tCOMPL as string,\n\t\tIPRKZ as string,\n\t\tRDMHD as string,\n\t\tPRZUS as string,\n\t\tMTPOS_MARA as string,\n\t\tBFLME as string,\n\t\tMATFI as string,\n\t\tCMREL as string,\n\t\tBBTYP as string,\n\t\tSLED_BBD as string,\n\t\tGTIN_VARIANT as string,\n\t\tGENNR as string,\n\t\tRMATP as string,\n\t\tGDS_RELEVANT as string,\n\t\tWEORA as string,\n\t\tHUTYP_DFLT as string,\n\t\tPILFERABLE as string,\n\t\tWHSTC as string,\n\t\tWHMATGR as string,\n\t\tHNDLCODE as string,\n\t\tHAZMAT as string,\n\t\tHUTYP as string,\n\t\tTARE_VAR as string,\n\t\tMAXC as decimal(38,18),\n\t\tMAXC_TOL as decimal(38,18),\n\t\tMAXL as decimal(38,18),\n\t\tMAXB as decimal(38,18),\n\t\tMAXH as decimal(38,18),\n\t\tMAXDIM_UOM as string,\n\t\tHERKL as string,\n\t\tMFRGR as string,\n\t\tQQTIME as decimal(38,18),\n\t\tQQTIMEUOM as string,\n\t\tQGRP as string,\n\t\tSERIAL as string,\n\t\tPS_SMARTFORM as string,\n\t\tLOGUNIT as string,\n\t\tCWQREL as string,\n\t\tCWQPROC as string,\n\t\tCWQTOLGR as string,\n\t\tADPROF as string,\n\t\tIPMIPPRODUCT as string,\n\t\tALLOW_PMAT_IGNO as string,\n\t\tMEDIUM as string,\n\t\tCOMMODITY as string,\n\t\tANIMAL_ORIGIN as string,\n\t\tTEXTILE_COMP_IND as string,\n\t\tSGT_CSGR as string,\n\t\tSGT_COVSA as string,\n\t\tSGT_STAT as string,\n\t\tSGT_SCOPE as string,\n\t\tSGT_REL as string,\n\t\tANP as string,\n\t\tPSM_CODE as string,\n\t\tFSH_MG_AT1 as string,\n\t\tFSH_MG_AT2 as string,\n\t\tFSH_MG_AT3 as string,\n\t\tFSH_SEALV as string,\n\t\tFSH_SEAIM as string,\n\t\tFSH_SC_MID as string,\n\t\tDUMMY_PRD_INCL_EEW_PS as string,\n\t\tSCM_MATID_GUID16 as binary,\n\t\tSCM_MATID_GUID22 as string,\n\t\tSCM_MATURITY_DUR as decimal(38,18),\n\t\tSCM_SHLF_LFE_REQ_MIN as decimal(38,18),\n\t\tSCM_SHLF_LFE_REQ_MAX as decimal(38,18),\n\t\tSCM_PUOM as string,\n\t\t{/CWM/XCWMAT} as string,\n\t\t{/CWM/VALUM} as string,\n\t\t{/CWM/TOLGR} as string,\n\t\t{/CWM/TARA} as string,\n\t\t{/CWM/TARUM} as string,\n\t\t{/BEV1/LULEINH} as string,\n\t\t{/BEV1/LULDEGRP} as string,\n\t\t{/BEV1/NESTRUCCAT} as string,\n\t\t{/DSD/SL_TOLTYP} as string,\n\t\t{/DSD/SV_CNT_GRP} as string,\n\t\t{/DSD/VC_GROUP} as string,\n\t\t{/SAPMP/KADU} as decimal(38,18),\n\t\t{/SAPMP/ABMEIN} as string,\n\t\t{/SAPMP/KADP} as decimal(38,18),\n\t\t{/SAPMP/BRAD} as decimal(38,18),\n\t\t{/SAPMP/SPBI} as decimal(38,18),\n\t\t{/SAPMP/TRAD} as decimal(38,18),\n\t\t{/SAPMP/KEDU} as decimal(38,18),\n\t\t{/SAPMP/SPTR} as decimal(38,18),\n\t\t{/SAPMP/FBDK} as decimal(38,18),\n\t\t{/SAPMP/FBHK} as decimal(38,18),\n\t\t{/SAPMP/RILI} as string,\n\t\t{/SAPMP/FBAK} as string,\n\t\t{/SAPMP/AHO} as string,\n\t\t{/SAPMP/MIFRR} as decimal(38,18),\n\t\t{/VSO/R_TILT_IND} as string,\n\t\t{/VSO/R_STACK_IND} as string,\n\t\t{/VSO/R_BOT_IND} as string,\n\t\t{/VSO/R_TOP_IND} as string,\n\t\t{/VSO/R_STACK_NO} as string,\n\t\t{/VSO/R_PAL_IND} as string,\n\t\t{/VSO/R_PAL_OVR_D} as decimal(38,18),\n\t\t{/VSO/R_PAL_OVR_W} as decimal(38,18),\n\t\t{/VSO/R_PAL_B_HT} as decimal(38,18),\n\t\t{/VSO/R_PAL_MIN_H} as decimal(38,18),\n\t\t{/VSO/R_TOL_B_HT} as decimal(38,18),\n\t\t{/VSO/R_NO_P_GVH} as string,\n\t\t{/VSO/R_QUAN_UNIT} as string,\n\t\t{/VSO/R_KZGVH_IND} as string,\n\t\tPACKCODE as string,\n\t\tDG_PACK_STATUS as string,\n\t\tMCOND as string,\n\t\tRETDELC as string,\n\t\tLOGLEV_RETO as string,\n\t\tNSNID as string,\n\t\tOVLPN as string,\n\t\tADSPC_SPC as string,\n\t\tVARID as binary,\n\t\tMSBOOKPARTNO as string,\n\t\tVTYPE as string,\n\t\tEVVAL as string,\n\t\tDVERS as string,\n\t\tDPCBT as string,\n\t\tXGRDT as string,\n\t\tIMATN as string,\n\t\tPICNUM as string,\n\t\tBSTAT as string,\n\t\tCOLOR_ATINN as string,\n\t\tSIZE1_ATINN as string,\n\t\tSIZE2_ATINN as string,\n\t\tCOLOR as string,\n\t\tSIZE1 as string,\n\t\tSIZE2 as string,\n\t\tFREE_CHAR as string,\n\t\tCARE_CODE as string,\n\t\tBRAND_ID as string,\n\t\tFIBER_CODE1 as string,\n\t\tFIBER_PART1 as string,\n\t\tFIBER_CODE2 as string,\n\t\tFIBER_PART2 as string,\n\t\tFIBER_CODE3 as string,\n\t\tFIBER_PART3 as string,\n\t\tFIBER_CODE4 as string,\n\t\tFIBER_PART4 as string,\n\t\tFIBER_CODE5 as string,\n\t\tFIBER_PART5 as string,\n\t\tFASHGRD as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.MARA',\n\tformat: 'query') ~> sourceStageMARA\nsource(output(\n\t\tMANDT as string,\n\t\tMTART as string,\n\t\tMTREF as string,\n\t\tMBREF as string,\n\t\tFLREF as string,\n\t\tNUMKI as string,\n\t\tNUMKE as string,\n\t\tENVOP as string,\n\t\tBSEXT as string,\n\t\tBSINT as string,\n\t\tPSTAT as string,\n\t\tKKREF as string,\n\t\tVPRSV as string,\n\t\tKZVPR as string,\n\t\tVMTPO as string,\n\t\tEKALR as string,\n\t\tKZGRP as string,\n\t\tKZKFG as string,\n\t\tBEGRU as string,\n\t\tKZPRC as string,\n\t\tKZPIP as string,\n\t\tPRDRU as string,\n\t\tARANZ as string,\n\t\tWMAKG as string,\n\t\tIZUST as string,\n\t\tARDEL as string,\n\t\tKZMPN as string,\n\t\tMSTAE as string,\n\t\tCCHIS as string,\n\t\tCTYPE as string,\n\t\tCLASS as string,\n\t\tCHNEU as string,\n\t\tPROD_TYPE_CODE as string,\n\t\tCONCTD_MATNR as string,\n\t\tVTYPE as string,\n\t\tVNUMKI as string,\n\t\tVNUMKE as string,\n\t\tKZFFF as string,\n\t\tKZRAC as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.T134',\n\tformat: 'query') ~> sourceStageT134\nsource(output(\n\t\tMANDT as string,\n\t\tSPRAS as string,\n\t\tMTART as string,\n\t\tMTBEZ as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.T134T\\n',\n\tformat: 'query') ~> sourceStageT134T\nsource(output(\n\t\tMANDT as string,\n\t\tMATNR as string,\n\t\tSPRAS as string,\n\t\tMAKTX as string,\n\t\tMAKTG as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.MAKT\\n\\nWHERE SPRAS COLLATE Latin1_General_CS_AS = \\'D\\' COLLATE Latin1_General_CS_AS​',\n\tformat: 'query') ~> sourceStageMAKT\nsourceStageMARA select(mapColumn(\n\t\tMANDT,\n\t\tMATNR,\n\t\tMTART,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColMARA\nsourceStageT134 select(mapColumn(\n\t\tMANDT,\n\t\tMTART,\n\t\tMTREF,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColT134\nsourceStageT134T select(mapColumn(\n\t\tMANDT,\n\t\tSPRAS,\n\t\tMTART,\n\t\tMTBEZ,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColT134T\nsourceStageMAKT select(mapColumn(\n\t\tMANDT,\n\t\tMATNR,\n\t\tSPRAS,\n\t\tMAKTX,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColMAKT\nSelectColMARA derive(MANDT = toInteger(MANDT)) ~> ChangeDatatypeMARA\nSelectColT134 derive(MANDT = toInteger(MANDT)) ~> ChangeDatatypeT134\nSelectColT134T derive(MANDT = toInteger(MANDT)) ~> ChangeDatatypeT134T\nSelectColMAKT derive(MANDT = toInteger(MANDT)) ~> ChangeDatatypeMAKT\nFilterT134T, ChangeDatatypeT134 join(ChangeDatatypeT134T@MANDT == ChangeDatatypeT134@MANDT\n\t&& SelectColT134T@MTART == SelectColT134@MTART,\n\tjoinType:'outer',\n\tbroadcast: 'auto')~> JoinT134TT134\nJoinT134TT134, JoinMAKTMARA join(ChangeDatatypeT134@MANDT == ChangeDatatypeMARA@MANDT\n\t&& SelectColT134@MTART == SelectColMARA@MTART,\n\tjoinType:'outer',\n\tbroadcast: 'auto')~> JoinALL\nFilterMAKT, ChangeDatatypeMARA join(ChangeDatatypeMAKT@MANDT == ChangeDatatypeMARA@MANDT\n\t&& SelectColMAKT@MATNR == SelectColMARA@MATNR,\n\tjoinType:'outer',\n\tbroadcast: 'auto')~> JoinMAKTMARA\nJoinALL derive(HASHKEY_BK = md5('_',ChangeDatatypeMARA@MANDT,'_',SelectColMARA@MATNR,'_',SelectColMARA@MTART,'_',SelectColMAKT@SPRAS,'_'),\n\t\tHASHKEY_DATA = md5('_',MTREF,'_',MTBEZ,'_',MAKTX,'_'),\n\t\tCREATED_ON = currentTimestamp(),\n\t\tSOURCE = 'asapSql.STAGE.MARA_asapSql.STAGE.MAKT_asapSql.STAGE.T134T_asapSql.STAGE.T134') ~> CreateHash\nChangeDatatypeT134T filter({SPRAS} == 'D') ~> FilterT134T\nChangeDatatypeMAKT filter({SPRAS} == 'D') ~> FilterMAKT\nCreateHash select(mapColumn(\n\t\tMANDT = {ChangeDatatypeMARA@MANDT},\n\t\tMATNR = {SelectColMARA@MATNR},\n\t\tMTART = {SelectColMARA@MTART},\n\t\tSPRAS = {SelectColMAKT@SPRAS},\n\t\tMTBEZ,\n\t\tMTREF,\n\t\tMAKTX,\n\t\tHASHKEY_BK,\n\t\tHASHKEY_DATA,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> SelectColumnOrder\nSelectColumnOrder aggregate(groupBy(MATNR,\n\t\tMANDT,\n\t\tMTART),\n\teach(match(name!='MANDT'&&name!='MATNR'&&name!='MTART'), $$ = first($$))) ~> distinctRows\ndistinctRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['TRUNCATE TABLE CLEANSE.MATERIAL'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sinkMaterial"
+		}
+	}
+}

@@ -1,0 +1,156 @@
+{
+	"name": "DF_CLEANSE_ORGA",
+	"properties": {
+		"folder": {
+			"name": "STAGE_CLEANSE"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageVBAK"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageTVKOT"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageTVTWT"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageTVTW"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageT001"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageTKA01"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageTVKO"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceStageTVKOV"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CLEANSE_ORGA",
+						"type": "DatasetReference"
+					},
+					"name": "sinkCleanseOrga"
+				}
+			],
+			"transformations": [
+				{
+					"name": "FilterTVTWT"
+				},
+				{
+					"name": "FilterTVKOT"
+				},
+				{
+					"name": "joinTvkoToT001"
+				},
+				{
+					"name": "selColTvko"
+				},
+				{
+					"name": "selColT001"
+				},
+				{
+					"name": "changeDatatypeTvko"
+				},
+				{
+					"name": "changeDatatypeT001"
+				},
+				{
+					"name": "jointvkotToTvko"
+				},
+				{
+					"name": "changeDatatypeTvkot"
+				},
+				{
+					"name": "joinTvkovToTvko"
+				},
+				{
+					"name": "changeDatatypeTvkov"
+				},
+				{
+					"name": "joinTvkovToTvtw"
+				},
+				{
+					"name": "changeDatatypeTvtw"
+				},
+				{
+					"name": "joinTvtwtToTvtw"
+				},
+				{
+					"name": "changeDatatypeTvtwt"
+				},
+				{
+					"name": "selectColVbak"
+				},
+				{
+					"name": "changeDatatypeVbak"
+				},
+				{
+					"name": "joinVbak"
+				},
+				{
+					"name": "joinVbakToTka01"
+				},
+				{
+					"name": "changeDatatypeTka01"
+				},
+				{
+					"name": "selColTka01"
+				},
+				{
+					"name": "selCol"
+				},
+				{
+					"name": "addMetaData"
+				},
+				{
+					"name": "selColTvkov"
+				},
+				{
+					"name": "distinctRows"
+				}
+			],
+			"script": "source(output(\n\t\tMANDT as string,\n\t\tVBELN as string,\n\t\tERDAT as string,\n\t\tERZET as string,\n\t\tERNAM as string,\n\t\tANGDT as string,\n\t\tBNDDT as string,\n\t\tAUDAT as string,\n\t\tVBTYP as string,\n\t\tTRVOG as string,\n\t\tAUART as string,\n\t\tAUGRU as string,\n\t\tGWLDT as string,\n\t\tSUBMI as string,\n\t\tLIFSK as string,\n\t\tFAKSK as string,\n\t\tNETWR as decimal(38,18),\n\t\tWAERK as string,\n\t\tVKORG as string,\n\t\tVTWEG as string,\n\t\tSPART as string,\n\t\tVKGRP as string,\n\t\tVKBUR as string,\n\t\tGSBER as string,\n\t\tGSKST as string,\n\t\tGUEBG as string,\n\t\tGUEEN as string,\n\t\tKNUMV as string,\n\t\tVDATU as string,\n\t\tVPRGR as string,\n\t\tAUTLF as string,\n\t\tVBKLA as string,\n\t\tVBKLT as string,\n\t\tKALSM as string,\n\t\tVSBED as string,\n\t\tFKARA as string,\n\t\tAWAHR as string,\n\t\tKTEXT as string,\n\t\tBSTNK as string,\n\t\tBSARK as string,\n\t\tBSTDK as string,\n\t\tBSTZD as string,\n\t\tIHREZ as string,\n\t\tBNAME as string,\n\t\tTELF1 as string,\n\t\tMAHZA as decimal(38,18),\n\t\tMAHDT as string,\n\t\tKUNNR as string,\n\t\tKOSTL as string,\n\t\tSTAFO as string,\n\t\tSTWAE as string,\n\t\tAEDAT as string,\n\t\tKVGR1 as string,\n\t\tKVGR2 as string,\n\t\tKVGR3 as string,\n\t\tKVGR4 as string,\n\t\tKVGR5 as string,\n\t\tKNUMA as string,\n\t\tKOKRS as string,\n\t\tPS_PSP_PNR as string,\n\t\tKURST as string,\n\t\tKKBER as string,\n\t\tKNKLI as string,\n\t\tGRUPP as string,\n\t\tSBGRP as string,\n\t\tCTLPC as string,\n\t\tCMWAE as string,\n\t\tCMFRE as string,\n\t\tCMNUP as string,\n\t\tCMNGV as string,\n\t\tAMTBL as decimal(38,18),\n\t\tHITYP_PR as string,\n\t\tABRVW as string,\n\t\tABDIS as string,\n\t\tVGBEL as string,\n\t\tOBJNR as string,\n\t\tBUKRS_VF as string,\n\t\tTAXK1 as string,\n\t\tTAXK2 as string,\n\t\tTAXK3 as string,\n\t\tTAXK4 as string,\n\t\tTAXK5 as string,\n\t\tTAXK6 as string,\n\t\tTAXK7 as string,\n\t\tTAXK8 as string,\n\t\tTAXK9 as string,\n\t\tXBLNR as string,\n\t\tZUONR as string,\n\t\tVGTYP as string,\n\t\tKALSM_CH as string,\n\t\tAGRZR as string,\n\t\tAUFNR as string,\n\t\tQMNUM as string,\n\t\tVBELN_GRP as string,\n\t\tSCHEME_GRP as string,\n\t\tABRUF_PART as string,\n\t\tABHOD as string,\n\t\tABHOV as string,\n\t\tABHOB as string,\n\t\tRPLNR as string,\n\t\tVZEIT as string,\n\t\tSTCEG_L as string,\n\t\tLANDTX as string,\n\t\tXEGDR as string,\n\t\tENQUEUE_GRP as string,\n\t\tDAT_FZAU as string,\n\t\tFMBDAT as string,\n\t\tVSNMR_V as string,\n\t\tHANDLE as string,\n\t\tPROLI as string,\n\t\tCONT_DG as string,\n\t\tCRM_GUID as string,\n\t\tUPD_TMSTMP as decimal(38,18),\n\t\tMSR_ID as string,\n\t\tTM_CTRL_KEY as string,\n\t\tOIPBL as string,\n\t\tHANDOVERLOC as string,\n\t\t{_DATAAGING} as string,\n\t\tABSTK as string,\n\t\tBESTK as string,\n\t\tCMPSC as string,\n\t\tCMPSD as string,\n\t\tCMPSI as string,\n\t\tCMPSJ as string,\n\t\tCMPSK as string,\n\t\tCMPS_CM as string,\n\t\tCMPS_TE as string,\n\t\tCMGST as string,\n\t\tCOSTA as string,\n\t\tDCSTK as string,\n\t\tFKSAK as string,\n\t\tFMSTK as string,\n\t\tFSSTK as string,\n\t\tGBSTK as string,\n\t\tLFGSK as string,\n\t\tLFSTK as string,\n\t\tLSSTK as string,\n\t\tMANEK as string,\n\t\tRFGSK as string,\n\t\tRFSTK as string,\n\t\tSPSTG as string,\n\t\tTRSTA as string,\n\t\tUVALL as string,\n\t\tUVALS as string,\n\t\tUVFAK as string,\n\t\tUVFAS as string,\n\t\tUVPRS as string,\n\t\tUVVLK as string,\n\t\tUVVLS as string,\n\t\tUVK01 as string,\n\t\tUVK02 as string,\n\t\tUVK03 as string,\n\t\tUVK04 as string,\n\t\tUVK05 as string,\n\t\tUVS01 as string,\n\t\tUVS02 as string,\n\t\tUVS03 as string,\n\t\tUVS04 as string,\n\t\tUVS05 as string,\n\t\tDUMMY_SALESDOC_INCL_EEW_PS as string,\n\t\tZAPCGKH as string,\n\t\tAPCGK_EXTENDH as string,\n\t\tZABDATH as string,\n\t\tAD01FAREG as string,\n\t\tAD01BASDOC as string,\n\t\tLASTVCHR as string,\n\t\tPSM_BUDAT as string,\n\t\tFSH_KVGR6 as string,\n\t\tFSH_KVGR7 as string,\n\t\tFSH_KVGR8 as string,\n\t\tFSH_KVGR9 as string,\n\t\tFSH_KVGR10 as string,\n\t\tFSH_REREG as string,\n\t\tFSH_CQ_CHECK as string,\n\t\tFSH_VRSN_STATUS as string,\n\t\tFSH_TRANSACTION as string,\n\t\tFSH_VAS_CG as string,\n\t\tFSH_CANDATE as string,\n\t\tFSH_SS as string,\n\t\tFSH_OS_STG_CHANGE as string,\n\t\tJ_3GKBAUL as string,\n\t\tMILL_APPL_ID as string,\n\t\tTAS as string,\n\t\tBETC as string,\n\t\tMOD_ALLOW as string,\n\t\tCANCEL_ALLOW as string,\n\t\tPAY_METHOD as string,\n\t\tBPN as string,\n\t\tREP_FREQ as string,\n\t\tLOGSYSB as string,\n\t\tKALCD as string,\n\t\tMULTI as string,\n\t\tSPPAYM as string,\n\t\tWTYSC_CLM_HDR as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.VBAK',\n\tformat: 'query') ~> sourceStageVBAK\nsource(output(\n\t\tMANDT as string,\n\t\tSPRAS as string,\n\t\tVKORG as string,\n\t\tVTEXT as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.TVKOT\\nWHERE SPRAS COLLATE Latin1_General_CS_AS = \\'D\\' COLLATE Latin1_General_CS_AS',\n\tformat: 'query') ~> sourceStageTVKOT\nsource(output(\n\t\tMANDT as string,\n\t\tSPRAS as string,\n\t\tVTWEG as string,\n\t\tVTEXT as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.TVTWT',\n\tformat: 'query') ~> sourceStageTVTWT\nsource(output(\n\t\tMANDT as string,\n\t\tVTWEG as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.TVTW',\n\tformat: 'query') ~> sourceStageTVTW\nsource(output(\n\t\tMANDT as string,\n\t\tBUKRS as string,\n\t\tBUTXT as string,\n\t\tORT01 as string,\n\t\tLAND1 as string,\n\t\tWAERS as string,\n\t\tSPRAS as string,\n\t\tKTOPL as string,\n\t\tWAABW as string,\n\t\tPERIV as string,\n\t\tKOKFI as string,\n\t\tRCOMP as string,\n\t\tADRNR as string,\n\t\tSTCEG as string,\n\t\tFIKRS as string,\n\t\tXFMCO as string,\n\t\tXFMCB as string,\n\t\tXFMCA as string,\n\t\tTXJCD as string,\n\t\tFMHRDATE as string,\n\t\tXTEMPLT as string,\n\t\tBUVAR as string,\n\t\tFDBUK as string,\n\t\tXFDIS as string,\n\t\tXVALV as string,\n\t\tXSKFN as string,\n\t\tKKBER as string,\n\t\tXMWSN as string,\n\t\tMREGL as string,\n\t\tXGSBE as string,\n\t\tXGJRV as string,\n\t\tXKDFT as string,\n\t\tXPROD as string,\n\t\tXEINK as string,\n\t\tXJVAA as string,\n\t\tXVVWA as string,\n\t\tXSLTA as string,\n\t\tXFDMM as string,\n\t\tXFDSD as string,\n\t\tXEXTB as string,\n\t\tEBUKR as string,\n\t\tKTOP2 as string,\n\t\tUMKRS as string,\n\t\tBUKRS_GLOB as string,\n\t\tFSTVA as string,\n\t\tOPVAR as string,\n\t\tXCOVR as string,\n\t\tTXKRS as string,\n\t\tWFVAR as string,\n\t\tXBBBF as string,\n\t\tXBBBE as string,\n\t\tXBBBA as string,\n\t\tXBBKO as string,\n\t\tXSTDT as string,\n\t\tMWSKV as string,\n\t\tMWSKA as string,\n\t\tIMPDA as string,\n\t\tXNEGP as string,\n\t\tXKKBI as string,\n\t\tWT_NEWWT as string,\n\t\tPP_PDATE as string,\n\t\tINFMT as string,\n\t\tFSTVARE as string,\n\t\tKOPIM as string,\n\t\tDKWEG as string,\n\t\tOFFSACCT as string,\n\t\tBAPOVAR as string,\n\t\tXCOS as string,\n\t\tXCESSION as string,\n\t\tXSPLT as string,\n\t\tSURCCM as string,\n\t\tDTPROV as string,\n\t\tDTAMTC as string,\n\t\tDTTAXC as string,\n\t\tDTTDSP as string,\n\t\tDTAXR as string,\n\t\tXVATDATE as string,\n\t\tPST_PER_VAR as string,\n\t\tXBBSC as string,\n\t\tFM_DERIVE_ACC as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.T001',\n\tformat: 'query') ~> sourceStageT001\nsource(output(\n\t\tMANDT as string,\n\t\tKOKRS as string,\n\t\tBEZEI as string,\n\t\tWAERS as string,\n\t\tKTOPL as string,\n\t\tLMONA as string,\n\t\tKOKFI as string,\n\t\tLOGSYSTEM as string,\n\t\tALEMT as string,\n\t\tMD_LOGSYSTEM as string,\n\t\tKHINR as string,\n\t\tKOMP1 as string,\n\t\tKOMP0 as string,\n\t\tKOMP2 as string,\n\t\tERKRS as string,\n\t\tDPRCT as string,\n\t\tPHINR as string,\n\t\tPCLDG as string,\n\t\tPCBEL as string,\n\t\tXWBUK as string,\n\t\tBPHINR as string,\n\t\tXBPALE as string,\n\t\tKSTAR_FIN as string,\n\t\tKSTAR_FID as string,\n\t\tPCACUR as string,\n\t\tPCACURTP as string,\n\t\tPCATRCUR as string,\n\t\tCTYP as string,\n\t\tRCLAC as string,\n\t\tBLART as string,\n\t\tFIKRS as string,\n\t\tRCL_PRIMAC as string,\n\t\tPCA_ALEMT as string,\n\t\tPCA_VALU as string,\n\t\tCVPROF as string,\n\t\tCVACT as string,\n\t\tVNAME as string,\n\t\tPCA_ACC_DIFF as string,\n\t\tTP_VALOHB as string,\n\t\tDEFPRCTR as string,\n\t\tAUTH_USE_NO_STD as string,\n\t\tAUTH_USE_ADD1 as string,\n\t\tAUTH_USE_ADD2 as string,\n\t\tAUTH_KE_NO_STD as string,\n\t\tAUTH_KE_USE_ADD1 as string,\n\t\tAUTH_KE_USE_ADD2 as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.TKA01',\n\tformat: 'query') ~> sourceStageTKA01\nsource(output(\n\t\tMANDT as string,\n\t\tVKORG as string,\n\t\tWAERS as string,\n\t\tBUKRS as string,\n\t\tADRNR as string,\n\t\tTXNAM_ADR as string,\n\t\tTXNAM_KOP as string,\n\t\tTXNAM_FUS as string,\n\t\tTXNAM_GRU as string,\n\t\tVKOAU as string,\n\t\tKUNNR as string,\n\t\tBOAVO as string,\n\t\tVKOKL as string,\n\t\tEKORG as string,\n\t\tEKGRP as string,\n\t\tLIFNR as string,\n\t\tWERKS as string,\n\t\tBSART as string,\n\t\tBSTYP as string,\n\t\tBWART as string,\n\t\tLGORT as string,\n\t\tTXNAM_SDB as string,\n\t\tMWSKZ as string,\n\t\tXSTCEG as string,\n\t\tJ_1ANUTIME as string,\n\t\tMAXBI as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.TVKO',\n\tformat: 'query') ~> sourceStageTVKO\nsource(output(\n\t\tMANDT as string,\n\t\tVKORG as string,\n\t\tVTWEG as string,\n\t\tVTWKO as string,\n\t\tVTWAU as string,\n\t\tVTWKU as string,\n\t\tVLGFI as string,\n\t\tVLTYP as string,\n\t\tVLKEB as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM STAGE.TVKOV',\n\tformat: 'query') ~> sourceStageTVKOV\nchangeDatatypeTvtwt filter(SPRAS == 'D') ~> FilterTVTWT\nchangeDatatypeTvkot filter(SPRAS == 'D') ~> FilterTVKOT\nchangeDatatypeTvko, changeDatatypeT001 join(changeDatatypeTvko@MANDT == changeDatatypeT001@MANDT\n\t&& selColTvko@BUKRS == selColT001@BUKRS,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> joinTvkoToT001\nsourceStageTVKO select(mapColumn(\n\t\tMANDT,\n\t\tVKORG,\n\t\tBUKRS\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selColTvko\nsourceStageT001 select(mapColumn(\n\t\tMANDT,\n\t\tBUKRS,\n\t\tBUTXT,\n\t\tORT01,\n\t\tLAND1\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selColT001\nselColTvko derive(MANDT = toInteger(MANDT)) ~> changeDatatypeTvko\nselColT001 derive(MANDT = toInteger(MANDT)) ~> changeDatatypeT001\njoinTvkoToT001, FilterTVKOT join(changeDatatypeTvko@MANDT == changeDatatypeTvkot@MANDT\n\t&& selColTvko@VKORG == sourceStageTVKOT@VKORG,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> jointvkotToTvko\nsourceStageTVKOT derive(MANDT = toInteger(MANDT)) ~> changeDatatypeTvkot\njointvkotToTvko, selColTvkov join(changeDatatypeTvko@MANDT == selColTvkov@MANDT\n\t&& selColTvko@VKORG == selColTvkov@VKORG,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> joinTvkovToTvko\nsourceStageTVKOV derive(MANDT = toInteger(MANDT)) ~> changeDatatypeTvkov\njoinTvkovToTvko, changeDatatypeTvtw join(selColTvkov@MANDT == changeDatatypeTvtw@MANDT\n\t&& selColTvkov@VTWEG == sourceStageTVTW@VTWEG,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> joinTvkovToTvtw\nsourceStageTVTW derive(MANDT = toInteger(MANDT)) ~> changeDatatypeTvtw\njoinTvkovToTvtw, FilterTVTWT join(changeDatatypeTvtw@MANDT == changeDatatypeTvtwt@MANDT\n\t&& sourceStageTVTW@VTWEG == sourceStageTVTWT@VTWEG,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> joinTvtwtToTvtw\nsourceStageTVTWT derive(MANDT = toInteger(MANDT)) ~> changeDatatypeTvtwt\nsourceStageVBAK select(mapColumn(\n\t\tMANDT,\n\t\tKOKRS\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selectColVbak\nselectColVbak derive(MANDT = toInteger(MANDT)) ~> changeDatatypeVbak\njoinTvtwtToTvtw, changeDatatypeVbak join(changeDatatypeTvko@MANDT == changeDatatypeVbak@MANDT,\n\tjoinType:'right',\n\tbroadcast: 'auto')~> joinVbak\njoinVbak, selColTka01 join(changeDatatypeVbak@MANDT == selColTka01@MANDT\n\t&& selectColVbak@KOKRS == selColTka01@KOKRS,\n\tjoinType:'left',\n\tbroadcast: 'auto')~> joinVbakToTka01\nsourceStageTKA01 derive(MANDT = toInteger(MANDT)) ~> changeDatatypeTka01\nchangeDatatypeTka01 select(mapColumn(\n\t\tMANDT,\n\t\tKOKRS,\n\t\tBEZEI\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selColTka01\njoinVbakToTka01 select(mapColumn(\n\t\tMANDT = {changeDatatypeTvko@MANDT},\n\t\tVKORG = {selColTvko@VKORG},\n\t\tVTWEG = {selColTvkov@VTWEG},\n\t\tKOKRS = {selectColVbak@KOKRS},\n\t\tBUKRS = {selColTvko@BUKRS},\n\t\tSPRAS = {sourceStageTVKOT@SPRAS},\n\t\tBUTXT,\n\t\tORT01,\n\t\tLAND1,\n\t\tVKORG_VTEXT = {sourceStageTVKOT@VTEXT},\n\t\tVTWEG_VTEXT = {sourceStageTVTWT@VTEXT},\n\t\tKOKRS_BEZEI = BEZEI\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selCol\nselCol derive(HASHKEY_BK = md5('_',MANDT,'_',VKORG,'_',VTWEG,'_',KOKRS,'_',BUKRS,'_'),\n\t\tHASHKEY_DATA = md5('_',BUTXT,'_',ORT01,'_',LAND1,'_',VKORG_VTEXT,'_',VTWEG_VTEXT,'_',KOKRS_BEZEI,'_'),\n\t\tCREATED_ON = currentTimestamp(),\n\t\tSOURCE = 'STAGE.VBAK & STAGE.TVKO & STAGE.T001 & STAGE.TVKOT & STAGE.TVKOV & STAGE.TVTW & STAGE.TVTWT & STAGE.TKA01') ~> addMetaData\nchangeDatatypeTvkov select(mapColumn(\n\t\tMANDT,\n\t\tVKORG,\n\t\tVTWEG\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> selColTvkov\naddMetaData aggregate(groupBy(MANDT,\n\t\tVKORG,\n\t\tVTWEG,\n\t\tBUKRS),\n\teach(match(name!='MANDT'&&name!='VTWEG'&&name!='VKORG'&&name!='BUKRS'), $$ = first($$))) ~> distinctRows\ndistinctRows sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['TRUNCATE TABLE CLEANSE.ORGA'],\n\tmapColumn(\n\t\tMANDT,\n\t\tVKORG,\n\t\tVTWEG,\n\t\tKOKRS,\n\t\tBUKRS,\n\t\tSPRAS,\n\t\tBUTXT,\n\t\tORT01,\n\t\tLAND1,\n\t\tVKORG_VTEXT,\n\t\tVTWEG_VTEXT,\n\t\tKOKRS_BEZEI,\n\t\tHASHKEY_BK,\n\t\tHASHKEY_DATA,\n\t\tCREATED_ON,\n\t\tSOURCE\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> sinkCleanseOrga"
+		}
+	}
+}

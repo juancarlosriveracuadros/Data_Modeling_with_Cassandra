@@ -1,0 +1,23 @@
+{
+	"name": "TRG_AZRSQL_DUMMY_TABLE_STRUCTURE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_SQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "TARGET/AZRSQL_DUMMY"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "CORE",
+			"table": {
+				"value": "@if(contains(item().TABLE_NAME, 'KUNDE'), concat('DIM_KUNDE'),\nif(contains(item().TABLE_NAME, 'SALES'), concat('FACT_SALES'),\nif(contains(item().TABLE_NAME, 'AUFTRAG'), concat('DIM_AUFTRAG'),\nif(contains(item().TABLE_NAME, 'MATERIAL'), concat('DIM_MATERIAL'),\nif(contains(item().TABLE_NAME, 'ORGA'), concat('DIM_ORGA'),\n'fail')))))",
+				"type": "Expression"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

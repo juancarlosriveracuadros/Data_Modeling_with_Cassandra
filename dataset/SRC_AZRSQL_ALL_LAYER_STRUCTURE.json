@@ -1,0 +1,16 @@
+{
+	"name": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_SQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SOURCE/STRUCTURE"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

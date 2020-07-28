@@ -1,0 +1,103 @@
+{
+	"name": "SRC_AZRSQL_MART",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_AZR_SQL",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SOURCE/AZRSQL"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "MANDT",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VBELN",
+				"type": "nvarchar"
+			},
+			{
+				"name": "POSNR",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Mantnr",
+				"type": "nvarchar"
+			},
+			{
+				"name": "KUNNR",
+				"type": "nvarchar"
+			},
+			{
+				"name": "AUFNR",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VKORG",
+				"type": "nvarchar"
+			},
+			{
+				"name": "VTWEG",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ABSATZ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "UMSATZ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "KUNDENART",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MonthYear",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MMYYYY",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Quarter",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "QuarterName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Year",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "Organisation",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Material_MAKTX",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Material_MTBEZ",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Distribution Channel",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "MART",
+			"table": "FULL"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

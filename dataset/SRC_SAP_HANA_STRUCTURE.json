@@ -1,0 +1,16 @@
+{
+	"name": "SRC_SAP_HANA_STRUCTURE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CLOUD_SAP_HANA",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "SOURCE/SAPHANA"
+		},
+		"annotations": [],
+		"type": "SapHanaTable",
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

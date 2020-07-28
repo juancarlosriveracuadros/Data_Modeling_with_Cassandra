@@ -1,0 +1,38 @@
+{
+	"name": "DF_DUMMY_KUNDE",
+	"properties": {
+		"folder": {
+			"name": "CORE_DUMMY_VALUES"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "sourceCoreDim"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CORE_DUMMY_KUNDE",
+						"type": "DatasetReference"
+					},
+					"name": "coreDummyDim"
+				}
+			],
+			"transformations": [
+				{
+					"name": "ChangeDatatypeKunde"
+				},
+				{
+					"name": "orderCol"
+				}
+			],
+			"script": "source(output(\n\t\tCKUN_DIM_KUNDE_SK as string,\n\t\tCKUN_MANDT as string,\n\t\tCKUN_KUNNR as string,\n\t\tCKUN_ANRED as string,\n\t\tCKUN_ADRNR as string,\n\t\tCKUN_NAME1 as string,\n\t\tCKUN_MCOD1 as string,\n\t\tCKUN_MCOD3 as string,\n\t\tCKUN_TELF1 as string,\n\t\tCKUN_LAND1 as string,\n\t\tCKUN_STRAS as string,\n\t\tCKUN_PSTLZ as string,\n\t\tCKUN_ORT01 as string,\n\t\tCKUN_ORT02 as string,\n\t\tCKUN_REGIO as string,\n\t\tCKUN_HASHKEY_BK as string,\n\t\tCKUN_HASHKEY_DATA as string,\n\t\tCKUN_CREATED_ON as string,\n\t\tCKUN_SOURCE as string,\n\t\tCKUN_VALID_FROM as string,\n\t\tCKUN_VALID_TO as string,\n\t\tCKUN_CURRENT_FLAG as string,\n\t\tCKUN_DML_STRAT as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM CORE.DIM_KUNDE',\n\tformat: 'query') ~> sourceCoreDim\nsourceCoreDim derive(CKUN_DIM_KUNDE_SK = 0,\n\t\tCKUN_MANDT = toInteger(CKUN_MANDT),\n\t\tCKUN_KUNNR = 'DUMMY',\n\t\tCKUN_ANRED = 'DUMMY',\n\t\tCKUN_ADRNR = 'DUMMY',\n\t\tCKUN_NAME1 = 'DUMMY',\n\t\tCKUN_MCOD1 = 'DUMMY',\n\t\tCKUN_MCOD3 = 'DUMMY',\n\t\tCKUN_TELF1 = 'DUMMY',\n\t\tCKUN_LAND1 = 'DUMMY',\n\t\tCKUN_STRAS = 'DUMMY',\n\t\tCKUN_PSTLZ = 'DUMMY',\n\t\tCKUN_ORT01 = 'DUMMY',\n\t\tCKUN_ORT02 = 'DUMMY',\n\t\tCKUN_REGIO = 'DUMMY',\n\t\tCKUN_HASHKEY_BK = 'DUMMY',\n\t\tCKUN_HASHKEY_DATA = 'DUMMY',\n\t\tCKUN_CREATED_ON = toDate('29991231 00:00:00.0000000'),\n\t\tCKUN_SOURCE = 'DUMMY',\n\t\tCKUN_VALID_FROM = toDate('29991231 00:00:00.0000000'),\n\t\tCKUN_VALID_TO = toDate('29991231 00:00:00.0000000'),\n\t\tCKUN_CURRENT_FLAG = 'DUMMY',\n\t\tCKUN_DML_STRAT = 'DUMMY') ~> ChangeDatatypeKunde\nChangeDatatypeKunde select(mapColumn(\n\t\tCKUN_DIM_KUNDE_SK,\n\t\tCKUN_MANDT,\n\t\tCKUN_KUNNR,\n\t\tCKUN_ANRED,\n\t\tCKUN_ADRNR,\n\t\tCKUN_NAME1,\n\t\tCKUN_MCOD1,\n\t\tCKUN_MCOD3,\n\t\tCKUN_TELF1,\n\t\tCKUN_LAND1,\n\t\tCKUN_STRAS,\n\t\tCKUN_PSTLZ,\n\t\tCKUN_ORT01,\n\t\tCKUN_ORT02,\n\t\tCKUN_REGIO,\n\t\tCKUN_HASHKEY_BK,\n\t\tCKUN_HASHKEY_DATA,\n\t\tCKUN_CREATED_ON,\n\t\tCKUN_SOURCE,\n\t\tCKUN_VALID_FROM,\n\t\tCKUN_VALID_TO,\n\t\tCKUN_CURRENT_FLAG,\n\t\tCKUN_DML_STRAT\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> orderCol\norderCol sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tpreSQLs:['TRUNCATE TABLE CORE.DIM_KUNDE'],\n\tpostSQLs:['\t   INSERT INTO [CORE].[DIM_KUNDE]\\n           ([CKUN_DIM_KUNDE_SK]\\n\t\t   ,[CKUN_MANDT]\\n           ,[CKUN_KUNNR]\\n           ,[CKUN_ANRED]\\n           ,[CKUN_ADRNR]\\n           ,[CKUN_NAME1]\\n           ,[CKUN_MCOD1]\\n           ,[CKUN_MCOD3]\\n           ,[CKUN_TELF1]\\n           ,[CKUN_LAND1]\\n           ,[CKUN_STRAS]\\n           ,[CKUN_PSTLZ]\\n           ,[CKUN_ORT01]\\n           ,[CKUN_ORT02]\\n           ,[CKUN_REGIO]\\n           ,[CKUN_HASHKEY_BK]\\n           ,[CKUN_HASHKEY_DATA]\\n           ,[CKUN_CREATED_ON]\\n           ,[CKUN_SOURCE]\\n\t\t   ,[CKUN_VALID_FROM]\\n\t\t   ,[CKUN_VALID_TO]\\n\t\t   ,[CKUN_CURRENT_FLAG]\\n\t\t   ,[CKUN_DML_STRAT])\\n     VALUES\\n           (0\\n\t\t   ,999\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'DUMMY\\'\\n           ,\\'29991231 00:00:00.0000000\\'\\n           ,\\'DUMMY\\'\\n\t\t   ,\\'29991231 00:00:00.0000000\\'\\n\t\t   ,\\'29991231 00:00:00.0000000\\'\\n\t\t   ,\\'Y\\'\\n\t\t   ,\\'DUMMY\\')'],\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> coreDummyDim"
+		}
+	}
+}

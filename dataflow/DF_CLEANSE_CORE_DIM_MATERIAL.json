@@ -1,0 +1,76 @@
+{
+	"name": "DF_CLEANSE_CORE_DIM_MATERIAL",
+	"properties": {
+		"folder": {
+			"name": "CLEANSE_CORE"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "SourceCleanseMaterial"
+				},
+				{
+					"dataset": {
+						"referenceName": "SRC_AZRSQL_ALL_LAYER_STRUCTURE",
+						"type": "DatasetReference"
+					},
+					"name": "SourceCoreMaterial"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CORE_DIM_MATERIAL",
+						"type": "DatasetReference"
+					},
+					"name": "targetUpdateCoreDimMaterial"
+				},
+				{
+					"dataset": {
+						"referenceName": "TRG_AZRSQL_CORE_DIM_MATERIAL",
+						"type": "DatasetReference"
+					},
+					"name": "targetInsertCoreDimMaterial"
+				}
+			],
+			"transformations": [
+				{
+					"name": "CoreDimMaterialMaxSk"
+				},
+				{
+					"name": "Lookup"
+				},
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "derivedColForUpdatedRow"
+				},
+				{
+					"name": "alterRowforUpdate"
+				},
+				{
+					"name": "createSk"
+				},
+				{
+					"name": "JoinMax"
+				},
+				{
+					"name": "derivedColForNewRows"
+				},
+				{
+					"name": "alterRowforInsert"
+				},
+				{
+					"name": "filterActiceRows"
+				}
+			],
+			"script": "source(output(\n\t\tMANDT as integer,\n\t\tMATNR as string,\n\t\tMTART as string,\n\t\tSPRAS as string,\n\t\tMTBEZ as string,\n\t\tMTREF as string,\n\t\tMAKTX as string,\n\t\tHASHKEY_BK as string,\n\t\tHASHKEY_DATA as string,\n\t\tCREATED_ON as timestamp,\n\t\tSOURCE as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM CLEANSE.MATERIAL\\n',\n\tformat: 'query') ~> SourceCleanseMaterial\nsource(output(\n\t\tCMAT_DIM_MATERIAL_SK as string,\n\t\tCMAT_MANDT as string,\n\t\tCMAT_MATNR as string,\n\t\tCMAT_MTART as string,\n\t\tCMAT_SPRAS as string,\n\t\tCMAT_MTBEZ as string,\n\t\tCMAT_MTREF as string,\n\t\tCMAT_MAKTX as string,\n\t\tCMAT_HASHKEY_BK as string,\n\t\tCMAT_HASHKEY_DATA as string,\n\t\tCMAT_CREATED_ON as string,\n\t\tCMAT_SOURCE as string,\n\t\tCMAT_VALID_FROM as string,\n\t\tCMAT_VALID_TO as string,\n\t\tCMAT_CURRENT_FLAG as string,\n\t\tCMAT_DML_STRAT as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tquery: 'SELECT * FROM CORE.DIM_MATERIAL',\n\tformat: 'query') ~> SourceCoreMaterial\nfilterActiceRows aggregate(MAXSK = max(toInteger(CMAT_DIM_MATERIAL_SK))) ~> CoreDimMaterialMaxSk\nSourceCleanseMaterial, filterActiceRows lookup(MANDT == toInteger(CMAT_MANDT)\n\t&& MATNR == CMAT_MATNR,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup\nLookup split(!isNull(CMAT_HASHKEY_BK) && notEquals(CMAT_HASHKEY_DATA, HASHKEY_DATA),\n\tisNull(CMAT_HASHKEY_BK),\n\tdisjoint: false) ~> ConditionalSplit1@(updateRows, newRows, doNothing)\nConditionalSplit1@updateRows derive(CURRENT_FLAG = 'N',\n\t\tVALID_TO = currentTimestamp(),\n\t\tDML_STRAT = 'HIST_UPD') ~> derivedColForUpdatedRow\nderivedColForUpdatedRow alterRow(updateIf(true())) ~> alterRowforUpdate\nConditionalSplit1@newRows keyGenerate(output(SK as long),\n\tstartAt: 1L) ~> createSk\ncreateSk, CoreDimMaterialMaxSk join(SK == MAXSK || true(),\n\tjoinType:'cross',\n\tbroadcast: 'auto')~> JoinMax\nJoinMax derive(NEWSK = SK + MAXSK,\n\t\tVALID_FROM = currentTimestamp(),\n\t\tVALID_TO = toTimestamp('2999-12-31 00:00:00'),\n\t\tDML_STRAT = iif(notEquals(CMAT_HASHKEY_DATA, HASHKEY_DATA), 'HIST_INS', 'INS'),\n\t\tSOURCE = 'CLEANSE.MATERIAL',\n\t\tCREATED_ON = currentTimestamp(),\n\t\tCURRENT_FLAG = 'Y') ~> derivedColForNewRows\nderivedColForNewRows alterRow(insertIf(true())) ~> alterRowforInsert\nSourceCoreMaterial filter(CMAT_CURRENT_FLAG == 'Y') ~> filterActiceRows\nalterRowforUpdate sink(input(\n\t\tCMAT_DIM_MATERIAL_SK as string,\n\t\tCMAT_MANDT as string,\n\t\tCMAT_MATNR as string,\n\t\tCMAT_MTART as string,\n\t\tCMAT_SPRAS as string,\n\t\tCMAT_MTBEZ as string,\n\t\tCMAT_MTREF as string,\n\t\tCMAT_MAKTX as string,\n\t\tCMAT_HASHKEY_BK as string,\n\t\tCMAT_HASHKEY_DATA as string,\n\t\tCMAT_CREATED_ON as string,\n\t\tCMAT_SOURCE as string,\n\t\tCMAT_VALID_FROM as string,\n\t\tCMAT_VALID_TO as string,\n\t\tCMAT_CURRENT_FLAG as string,\n\t\tCMAT_DML_STRAT as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['CMAT_DIM_MATERIAL_SK'],\n\tformat: 'table',\n\tmapColumn(\n\t\tCMAT_DIM_MATERIAL_SK,\n\t\tCMAT_VALID_TO = VALID_TO,\n\t\tCMAT_CURRENT_FLAG = CURRENT_FLAG,\n\t\tCMAT_DML_STRAT = DML_STRAT\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> targetUpdateCoreDimMaterial\nalterRowforInsert sink(input(\n\t\tCMAT_DIM_MATERIAL_SK as string,\n\t\tCMAT_MANDT as string,\n\t\tCMAT_MATNR as string,\n\t\tCMAT_MTART as string,\n\t\tCMAT_SPRAS as string,\n\t\tCMAT_MTBEZ as string,\n\t\tCMAT_MTREF as string,\n\t\tCMAT_MAKTX as string,\n\t\tCMAT_HASHKEY_BK as string,\n\t\tCMAT_HASHKEY_DATA as string,\n\t\tCMAT_CREATED_ON as string,\n\t\tCMAT_SOURCE as string,\n\t\tCMAT_VALID_FROM as string,\n\t\tCMAT_VALID_TO as string,\n\t\tCMAT_CURRENT_FLAG as string,\n\t\tCMAT_DML_STRAT as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tmapColumn(\n\t\tCMAT_DIM_MATERIAL_SK = NEWSK,\n\t\tCMAT_MANDT = MANDT,\n\t\tCMAT_MATNR = MATNR,\n\t\tCMAT_MTART = MTART,\n\t\tCMAT_SPRAS = SPRAS,\n\t\tCMAT_MTBEZ = MTBEZ,\n\t\tCMAT_MTREF = MTREF,\n\t\tCMAT_MAKTX = MAKTX,\n\t\tCMAT_HASHKEY_BK = HASHKEY_BK,\n\t\tCMAT_HASHKEY_DATA = HASHKEY_DATA,\n\t\tCMAT_CREATED_ON = CREATED_ON,\n\t\tCMAT_SOURCE = SOURCE,\n\t\tCMAT_VALID_FROM = VALID_FROM,\n\t\tCMAT_VALID_TO = VALID_TO,\n\t\tCMAT_CURRENT_FLAG = CURRENT_FLAG,\n\t\tCMAT_DML_STRAT = DML_STRAT\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> targetInsertCoreDimMaterial"
+		}
+	}
+}
