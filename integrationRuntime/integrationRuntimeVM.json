@@ -1,6 +1,0 @@
-{
-	"name": "integrationRuntimeVM",
-	"properties": {
-		"type": "SelfHosted"
-	}
-}
